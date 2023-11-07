@@ -1,1 +1,1 @@
-# trojan-2.0
+work on a soft power index

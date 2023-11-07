@@ -1,0 +1,115 @@
+{
+    "info": {
+        "org":                "The Fund For Peace",
+        "version":            2023,
+        "main_polished_name": "Fragile State Index",
+        "main_name":          "Total",
+        "nb_sub_indexes":     "12",
+        "sub_indexes": [
+            "C1: Security Apparatus", 
+            "C2: Factionalized Elites", 
+            "C3: Group Grievance",
+            "E1: Economy",
+            "E2: Economic Inequality",
+            "E3: Human Flight and Brain Drain",
+            "P1: State Legitimacy",
+            "P2: Public Services",
+            "P3: Human Rights",
+            "S1: Demographic Pressures",
+            "S2: Refugees and IDPs",
+            "X1: External Intervention"
+        ],
+        "config": "/workspace/qgi\\trojan 2.0\\config\\fsi.json"
+    },
+    "source": {
+        "folder": "/workspace/qgi\\trojan 2.0\\data\\raw\\The Fund For Peace\\Fragile States Index",
+        "file_pattern": "fsi-*.xlsx",
+        "file_type": "xlsx",
+        "sheet_name": 0
+    },
+    "destination": {
+        "folder": "/workspace/qgi\\trojan 2.0\\data\\processed\\The Fund For Peace\\Fragile State Index\\",
+        "file_name_pattern": "MAIN - State Fragility Index.csv",
+        "file_type": "csv"
+    },
+    "structure": {
+        "columns": {
+            "country":             "Country",
+            "year":                "Year",
+            "main_index":          "Total",
+            "use_sub_index_names": "True",
+            "alt_sub_index_names": "None"
+        }
+    },
+    "processing": {
+        "extract": [
+            {
+                "action": "extract_one_sheet_data_from_xlsx_pattern",
+                "parameters": {
+                    "sheet_position": 0,
+                    "folder":         "/workspace/qgi\\trojan 2.0\\data\\raw\\The Fund For Peace\\Fragile States Index",
+                    "file_pattern":   "fsi-*.xlsx"
+                }
+            }
+        ],
+        "transform": [
+            {
+                "action": "concatenate_dataframes",
+                "parameters": {
+                    "columns": [
+                        "Year",
+                        "Country",
+                        "Total",
+                        "C1: Security Apparatus", 
+                        "C2: Factionalized Elites", 
+                        "C3: Group Grievance",
+                        "E1: Economy",
+                        "E2: Economic Inequality",
+                        "E3: Human Flight and Brain Drain",
+                        "P1: State Legitimacy",
+                        "P2: Public Services",
+                        "P3: Human Rights",
+                        "S1: Demographic Pressures",
+                        "S2: Refugees and IDPs",
+                        "X1: External Intervention"
+                    ]
+                }
+            },
+            {
+                "action": "convert_year_col_to_string_yyyy",
+                "parameters": {}
+            },
+            {
+                "action": "sort_processed_df_by_year",
+                "parameters": {}   
+            },
+            {
+                "action": "interpolate_single_best_missing_value",
+                "parameters": {}   
+            },
+            {
+                "action": "remove_rank_column",
+                "parameters": {}   
+            },
+            {
+                "action": "trim_country_names",
+                "parameters": {}   
+            },
+            {
+                "action": "transform_country_names",
+                "parameters": {}   
+            }
+        ],
+        "load": [
+            {
+                "action": "save_csv",
+                "parameters": {
+                    "destination_folder": "/workspace/qgi\\trojan 2.0\\data\\processed\\The Fund For Peace\\Fragile State Index\\",
+                    "file_name_pattern":  "MAIN - State Fragility Index.csv",
+                    "index_name":         "Total"
+                }
+            }
+        ],
+        "patternize": []
+    }
+}
